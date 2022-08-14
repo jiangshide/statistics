@@ -1,0 +1,93 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.0"
+
+    signingConfigs {
+        sign {
+            storeFile file("$rootDir/$STORE_FILE")
+            storePassword STORE_PSW
+            keyAlias = KEY_ALIAS
+            keyPassword KEY_PSW
+
+            v1SigningEnabled = true
+            v2SigningEnabled = true
+        }
+        debug {
+            storeFile file("$rootDir/$STORE_FILE")
+            storePassword STORE_PSW
+            keyAlias = KEY_ALIAS
+            keyPassword KEY_PSW
+            v1SigningEnabled = true
+            v2SigningEnabled = true
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.jingos.statistics"
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories{
+    flatDir{
+        dirs 'libs'
+    }
+}
+
+dependencies {
+
+    implementation fileTree(include:['*.jar'], dir:'libs')
+
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation files('libs/gson.jar')
+    implementation files('libs/umeng.jar')
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation (name:'umzid', ext:'aar')
+    implementation (name:'contextualcards', ext:'aar')
+
+
+
+    implementation project(':security')
+
+//    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+
+    // 友盟基础组件库（所有友盟业务SDK都依赖基础组件库）
+//    implementation "com.umeng.umsdk:common:x.x.x"
+//    implementation "com.umeng.umsdk:asms:x.x.x" // asms包依赖(必选)
+
+//    implementation  'com.umeng.umsdk:common:latest.integration'// 必选
+//    implementation  'com.umeng.umsdk:asms:latest.integration'// 必选
+
+//    implementation 'com.umeng.umsdk:apm:latest.integration' // 错误分析升级为独立SDK，看crash数据请一定集成，可选
+//    implementation  'com.umeng.umsdk:abtest:latest.integration'//使用U-App中ABTest能力，可选
+
+// 下面各SDK根据宿主App是否使用相关业务按需引入。
+//    implementation "com.umeng.umsdk:abtest:7.1.5" // ABTest功能依赖(可选)
+//    implementation "com.umeng.umsdk:apm:7.1.5" // 应用性能监控SDK依赖(可选)
+//    implementation "com.umeng.umsdk:game:7.1.5" // 游戏统计SDK依赖(可选)
+}
